@@ -1,6 +1,7 @@
 import numpy as np
 import constants as c
 import pygame
+import random
 
 class ChompGame:
     def __init__(self, row, column, player):
@@ -106,9 +107,62 @@ class ChompGame:
                 cplayer = 'C'
         pygame.quit()
 
+def possible_moves(array):
+    rows, cols = np.where(array == "_")
+    possible = []
+    for r, c in zip(rows, cols):
+        possible.append((r, c))
+    return possible
+
+class Player:
+    def __init__(self, move='X', dumb=False):
+        self.config = {}
+        self.stack_configs = []
+        self.move = move
+        self.games_won = 0
+        self.games_lost = 0
+        self.games_drawn = 0
+        self.dumb = dumb
+
+    def update_config(self, array1):
+        temp = tuple(array1.flatten())
+        self.stack_configs.append(temp)
+        self.config[temp] = possible_moves(array1)
+
+    def player_possible_moves(self, array1):
+        temp = tuple(array1.flatten())
+        if temp not in self.config:
+            self.update_config(array1)
+        return self.config[temp]
+
+    def punish(self, last_move):
+        if not self.dumb:
+            for i in range(len(last_move)):
+                r, c = last_move[i]
+                last_config = self.stack_configs[i]
+                # print(len(self.config[last_config]))
+                self.config[last_config].remove((r, c))
+        self.stack_configs = []
+
+    def reward(self, last_move, win_draw):
+        if not self.dumb:
+            for i in range(len(last_move)):
+                r, c = last_move[i]
+                last_config = self.stack_configs[i]
+                if win_draw == 'win':
+                    self.config[last_config].append((r, c))
+                    self.config[last_config].append((r, c))
+                    self.config[last_config].append((r, c))
+                elif win_draw == 'draw':
+                    self.config[last_config].append((r, c))
+        self.stack_configs = []
 
 
-game = ChompGame(7,7,'H')
+
+
+
+
+game = ChompGame(18,18,'H')
 game.play_game()
 
 
