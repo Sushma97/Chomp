@@ -3,12 +3,13 @@ import constants as c
 import pygame
 import random
 
+
 class ChompGame:
     def __init__(self, row, column, player):
         self.row = row
         self.column = column
         self.fplayer = player
-        #todo: define players and set the limit on row and column
+        # todo: define players and set the limit on row and column
         self.board = np.full((row, column), fill_value=1, dtype=int)
         self.end = False
 
@@ -82,43 +83,125 @@ class ChompGame:
                     pygame.quit()
         return row, column
 
-
     def play_game(self):
         screen = self.visualization_init()
         cplayer = self.fplayer
+        last_move_H = []
+        last_move_C = []
+        player = Player()
         while not self.end:
             if cplayer == 'H':
                 pos = self.human_turn()
-
+                Hpos = pos
+                last_move_H.append(Hpos)
             elif cplayer == 'C':
-                #TODO implement smart move
-                pos = self.human_turn()
-
-
+                # TODO implement smart move
+                #####
+                player.update_config(self.board)
+                row1, col1 = next_move(self.board, player)
+                add_element(row1, col1, 0, self.board)
+                last_move_C.append((row1, col1))
+                #####
+                # pos = self.human_turn()
+                pos = (row1, col1)
+                Cpos = pos
             self.board[pos[0]:, pos[1]:] = 0
 
             self.select(pos, cplayer, screen)
 
             self.display(screen)
-            self.winning_condition(pos,cplayer, screen)
+            self.winning_condition(pos, cplayer, screen)
+            ###
+            if self.end and cplayer == 'C':
+                player.punish(last_move_H)
+                player.reward(last_move_C, 'win')
+            ###
             if cplayer == 'C':
                 cplayer = 'H'
             elif cplayer == 'H':
                 cplayer = 'C'
         pygame.quit()
 
+
+def win(position):
+    if position[0] == 0 and position[1] == 0:
+        return True
+
+
+def play_games(player1, player2, size, num_of_games=1):
+    for i in range(num_of_games):
+        array = np.full((size, size), fill_value=1, dtype=int)
+        play_computers(array, player1, player2)
+
+
+def play_computers(array, player1, player2):
+    last_move1 = []
+    last_move2 = []
+    while True:
+        # print(array)
+        # Player 1
+        # Check the current configuration and the next possible move
+        player1.update_config(array)
+        row1, col1 = next_move(array, player1)
+        add_element(row1, col1, 0, array)
+        last_move1.append((row1, col1))
+        if win((row1, col1)):
+            # print(array)
+            print('Player 2 wins')
+            player2.games_won += 1
+            player1.games_lost += 1
+            ##################
+            # Punish Player 2 by removing the last element from it's configuration
+            # print(len(player1.stack_configs), len(last_move1))
+            player1.punish(last_move1)
+            player2.reward(last_move2, 'win')
+            break
+
+        # Player 2
+        # Check the current configuration and the next possible move
+        player2.update_config(array)
+        row2, col2 = next_move(array, player2)
+        add_element(row2, col2, 1, array)
+        last_move2.append((row2, col2))
+        if win((row2, col2)):
+            player1.games_won += 1
+            player2.games_lost += 1
+            print('Player 1 wins')
+            # print(array)
+            ##################
+            # Punish Player 1 by removing the last element from it's configuration
+            # print(len(player2.stack_configs), len(last_move2))
+            player2.punish(last_move2)
+            player1.reward(last_move1, 'win')
+            break
+
+
 def possible_moves(array):
-    rows, cols = np.where(array == "_")
+    rows, cols = np.where(array == 1)
     possible = []
     for r, c in zip(rows, cols):
         possible.append((r, c))
     return possible
 
+
+def next_move(array, player=None):
+    # print(len(player.player_possible_moves(array)))
+    if player:
+        return random.choice(player.player_possible_moves(array))
+    else:
+        return random.choice(possible_moves(array))
+
+
+def add_element(row, col, element, array):
+    array[row, col] = element
+    array[row:, col:] = 0
+
+
 class Player:
-    def __init__(self, move='X', dumb=False):
+    def __init__(self, dumb=False):
         self.config = {}
         self.stack_configs = []
-        self.move = move
+        # self.move = move
         self.games_won = 0
         self.games_lost = 0
         self.games_drawn = 0
@@ -141,6 +224,7 @@ class Player:
                 r, c = last_move[i]
                 last_config = self.stack_configs[i]
                 # print(len(self.config[last_config]))
+                # if (r,c) in self.config[last_config]:
                 self.config[last_config].remove((r, c))
         self.stack_configs = []
 
@@ -158,13 +242,11 @@ class Player:
         self.stack_configs = []
 
 
+player1 = Player()
+player2 = Player(dumb=True)
 
-
-
-
-game = ChompGame(18,18,'H')
-game.play_game()
-
-
-
-
+play_games(player2, player1, 9, 1000)
+print(player1.games_won)
+print(player2.games_won)
+# game = ChompGame(18,18,'H')
+# game.play_game()
