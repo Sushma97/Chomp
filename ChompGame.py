@@ -57,12 +57,12 @@ class ChompGame:
                 win = 'H'
             print("{} WON!".format(win))
             self.end = True
-            font = pygame.font.SysFont('Calibri', int(c.theight * self.row * 1.5), True, False)
+            font = pygame.font.SysFont('Calibri', int(c.theight * self.row * 0.25), True, False)
             message = 'Winner: ' + win
             message_size = font.size(message)
             text = font.render(message, True, c.black)
-            text_coordinates = [int((c.theight * self.row) * 0.5 - message_size[0] * 0.5),
-                                int((c.twidth * self.column) * 1.25 - message_size[1] * 0.5)]
+            text_coordinates = [int((c.theight * self.row * 0.75) - (message_size[0] * 0.5)),
+                                int((c.twidth * self.column * 1.25) - (message_size[1] * 0.5))]
             screen.blit(text, text_coordinates)
             pygame.display.flip()
             pygame.time.wait(2000)
@@ -242,11 +242,11 @@ class Player:
         self.stack_configs = []
 
 
-player1 = Player()
-player2 = Player(dumb=True)
-
-play_games(player2, player1, 9, 1000)
-print(player1.games_won)
-print(player2.games_won)
-# game = ChompGame(18,18,'H')
-# game.play_game()
+# player1 = Player()
+# player2 = Player(dumb=True)
+#
+# play_games(player2, player1, 9, 1000)
+# print(player1.games_won)
+# print(player2.games_won)
+game = ChompGame(18,18,'H')
+game.play_game()
