@@ -130,14 +130,22 @@ def win(position):
 
 
 def play_games(player1, player2, size, num_of_games=1):
+    games_won_1 = 0
+    games_won_2 = 0
     for i in range(num_of_games):
         array = np.full((size, size), fill_value=1, dtype=int)
-        play_computers(array, player1, player2)
+        player_name = play_computers(array, player1, player2)
+        if player_name == player1.name:
+            games_won_1+=1
+        else:
+            games_won_2+=1
+    print(games_won_1, games_won_2)
 
 
 def play_computers(array, player1, player2):
     last_move1 = []
     last_move2 = []
+
     while True:
         # print(array)
         # Player 1
@@ -156,7 +164,8 @@ def play_computers(array, player1, player2):
             # print(len(player1.stack_configs), len(last_move1))
             player1.punish(last_move1)
             player2.reward(last_move2, 'win')
-            break
+            return player2.name
+            # break
 
         # Player 2
         # Check the current configuration and the next possible move
@@ -174,8 +183,8 @@ def play_computers(array, player1, player2):
             # print(len(player2.stack_configs), len(last_move2))
             player2.punish(last_move2)
             player1.reward(last_move1, 'win')
-            break
-
+            return player1.name
+            # break
 
 def possible_moves(array):
     rows, cols = np.where(array == 1)
@@ -232,8 +241,9 @@ class Player:
                 r, c = last_move[i]
                 last_config = self.stack_configs[i]
                 # print(len(self.config[last_config]))
-                if (r,c) in self.config[last_config]:
+                if (r, c) in self.config[last_config]:
                     self.config[last_config].remove((r, c))
+                    break
         self.stack_configs = []
 
     def reward(self, last_move, win_draw):
@@ -247,24 +257,22 @@ class Player:
                     # self.config[last_config]
                     ####
                     self.config[last_config].append((r, c))
-                    self.config[last_config].append((r, c))
-                    self.config[last_config].append((r, c))
-                elif win_draw == 'draw':
-                    self.config[last_config].append((r, c))
+                    # self.config[last_config].append((r, c))
+                    # self.config[last_config].append((r, c))
         self.stack_configs = []
 
 
 # player1 = Player('player1')
 # player2 = Player('player2',dumb=True)
-
 player1 = pickle.load(open("player1.pkl", "rb"))
 player2 = pickle.load(open("player2.pkl", "rb"))
-print('games1',player1.games_won)
-print('games2',player2.games_won)
-play_games(player2, player1, 9, 100000)
+play_games(player1, player2, 9, 10000)
 
 #Save the config of the players
 pickle.dump(player1, open("player1.pkl", "wb"))
 pickle.dump(player2, open("player2.pkl", "wb"))
-game = ChompGame(18,18,'H')
-game.play_game(player2)
+print('games1',player1.games_won)
+print('games2',player2.games_won)
+
+# game = ChompGame(18,18,'H')
+# game.play_game(player2)
