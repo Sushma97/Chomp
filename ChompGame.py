@@ -2,6 +2,7 @@ import numpy as np
 import constants as c
 import pygame
 import random
+import pickle
 
 
 class ChompGame:
@@ -267,11 +268,3 @@ pickle.dump(player1, open("player1.pkl", "wb"))
 pickle.dump(player2, open("player2.pkl", "wb"))
 game = ChompGame(18,18,'H')
 game.play_game(player2)
-# player1 = Player()
-# player2 = Player(dumb=True)
-#
-# play_games(player2, player1, 9, 1000)
-# print(player1.games_won)
-# print(player2.games_won)
-game = ChompGame(18,18,'H')
-game.play_game()
