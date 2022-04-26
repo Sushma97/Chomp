@@ -2,7 +2,6 @@ import numpy as np
 import constants as c
 import pygame
 import random
-import pickle
 
 
 class ChompGame:
@@ -58,13 +57,12 @@ class ChompGame:
                 win = 'H'
             print("{} WON!".format(win))
             self.end = True
-            font = pygame.font.SysFont('Calibri', int(c.theight * 1.5), True, False)
+            font = pygame.font.SysFont('Calibri', int(c.theight * self.row * 0.25), True, False)
             message = 'Winner: ' + win
             message_size = font.size(message)
             text = font.render(message, True, c.black)
-            text_coordinates = [int(c.twidth * self.column * 1.5*0.5),int(c.theight * self.row * 1.5*0.5)]
-            # text_coordinates = [int((c.theight * self.row) * 0.5 - message_size[0] * 0.5),
-            #                     int((c.twidth * self.column) * 1.25 - message_size[1] * 0.5)]
+            text_coordinates = [int((c.theight * self.row * 0.75) - (message_size[0] * 0.5)),
+                                int((c.twidth * self.column * 1.25) - (message_size[1] * 0.5))]
             screen.blit(text, text_coordinates)
             pygame.display.flip()
             pygame.time.wait(2000)
@@ -139,23 +137,17 @@ def play_games(player1, player2, size, num_of_games=1):
 def play_computers(array, player1, player2):
     last_move1 = []
     last_move2 = []
-    move_1 = 0
-    # move_2 = 0
     while True:
         # print(array)
         # Player 1
         # Check the current configuration and the next possible move
-        # print("Before",player1.config)
         player1.update_config(array)
-        # print("After",player1.config)
-        # print(move_1)
-        move_1+=1
         row1, col1 = next_move(array, player1)
         add_element(row1, col1, 0, array)
         last_move1.append((row1, col1))
         if win((row1, col1)):
             # print(array)
-            print(f'{player1.name} wins')
+            print('Player 2 wins')
             player2.games_won += 1
             player1.games_lost += 1
             ##################
@@ -168,15 +160,13 @@ def play_computers(array, player1, player2):
         # Player 2
         # Check the current configuration and the next possible move
         player2.update_config(array)
-        # print(move_1)
-        move_1 += 1
         row2, col2 = next_move(array, player2)
         add_element(row2, col2, 1, array)
         last_move2.append((row2, col2))
         if win((row2, col2)):
             player1.games_won += 1
             player2.games_lost += 1
-            print(f'{player2.name} wins')
+            print('Player 1 wins')
             # print(array)
             ##################
             # Punish Player 1 by removing the last element from it's configuration
@@ -277,3 +267,11 @@ pickle.dump(player1, open("player1.pkl", "wb"))
 pickle.dump(player2, open("player2.pkl", "wb"))
 game = ChompGame(18,18,'H')
 game.play_game(player2)
+# player1 = Player()
+# player2 = Player(dumb=True)
+#
+# play_games(player2, player1, 9, 1000)
+# print(player1.games_won)
+# print(player2.games_won)
+game = ChompGame(18,18,'H')
+game.play_game()
