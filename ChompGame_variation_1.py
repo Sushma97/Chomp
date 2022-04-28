@@ -2,15 +2,16 @@ import numpy as np
 import constants as c
 import pygame
 import random
-import pickle
-import training
+import Player
 
 
-class ChompGame:
+class ChompGame_Variation:
     def __init__(self, row, column, player):
         self.row = row
         self.column = column
         self.fplayer = player
+        self.prow = random.randint(0, self.row-1)
+        self.pcolumn = random.randint(0, self.column-1)
         # todo: define players and set the limit on row and column
         self.board = np.full((row, column), fill_value=1, dtype=int)
         self.end = False
@@ -34,8 +35,8 @@ class ChompGame:
                     color = c.white
                 pygame.draw.rect(screen, color,
                                  [c.twidth * column + c.margin, c.theight * row + c.margin, c.width, c.height])
-        color = c.purple
-        pygame.draw.rect(screen, color, [c.twidth * 0 + c.margin, c.theight * 0 + c.margin, c.width, c.height])
+        # color = c.purple
+        # pygame.draw.rect(screen, color, [c.twidth * 0 + c.margin, c.theight * 0 + c.margin, c.width, c.height])
         pygame.display.flip()
 
     def select(self, position, turn, screen):
@@ -52,19 +53,23 @@ class ChompGame:
             pygame.time.wait(500)
 
     def winning_condition(self, position, turn, screen):
-        if position[0] == 0 and position[1] == 0:
+        # self.board[pos[0]:, pos[1]:] = 0
+        print(position[0], position[1], self.prow, self.pcolumn)
+        if position[0] <= self.prow and position[1] <= self.pcolumn:
             if turn == 'H':
                 win = 'C'
             else:
                 win = 'H'
             print("{} WON!".format(win))
             self.end = True
+            color = c.purple
+            pygame.draw.rect(screen, color, [c.twidth * self.pcolumn + c.margin, c.theight * self.prow + c.margin, c.width, c.height])
             font = pygame.font.SysFont('Calibri', int(c.theight * self.row * 0.25), True, False)
             message = 'Winner: ' + win
             message_size = font.size(message)
             text = font.render(message, True, c.black)
             text_coordinates = [int((c.theight * self.row * 0.75) - (message_size[0] * 0.5)),
-                                int((c.twidth * self.column * 1.05) - (message_size[1] * 0.5))]
+                                int((c.twidth * self.column * 1.25) - (message_size[1] * 0.5))]
             screen.blit(text, text_coordinates)
             pygame.display.flip()
             pygame.time.wait(2000)
@@ -90,7 +95,7 @@ class ChompGame:
         cplayer = self.fplayer
         last_move_H = []
         last_move_C = []
-        # player = Player()
+        player = Player.Player("computer")
         while not self.end:
             if cplayer == 'H':
                 pos = self.human_turn()
@@ -99,29 +104,31 @@ class ChompGame:
             elif cplayer == 'C':
                 # TODO implement smart move
                 #####
-                player = training.load_player(self.row, self.column)
-                player.update_config(self.board)
-                row1, col1 = player.next_move(self.board, player)
-                training.add_element(row1, col1, 0, self.board)
-                last_move_C.append((row1, col1))
-                #####
-                # pos = self.human_turn()
-                pos = (row1, col1)
-                Cpos = pos
+
+                pos = player.next_move(self.board)
+                # player = training.load_player(self.row, self.column)
+                # player.update_config(self.board)
+                # row1, col1 = player.next_move(self.board, player)
+                # training.add_element(row1, col1, 0, self.board)
+                # last_move_C.append((row1, col1))
+                # #####
+                # # pos = self.human_turn()
+                # pos = (row1, col1)
+                # Cpos = pos
             self.board[pos[0]:, pos[1]:] = 0
 
             self.select(pos, cplayer, screen)
 
             self.display(screen)
-            win = self.winning_condition(pos, cplayer, screen)
+            self.winning_condition(pos, cplayer, screen)
             ###
-            if self.end and win == 'C':
-                # player.punish(last_move_H)
-                player.reward(last_move_C)
-            elif self.end and win == 'H':
-                player.punish(last_move_C)
-                # player.reward(last_move_H, 'win')
-            pickle.dump(player, open("player1_" + str(self.row) + "_" + str(self.column) + ".pkl", "wb"))
+            # if self.end and win == 'C':
+            #     # player.punish(last_move_H)
+            #     player.reward(last_move_C)
+            # elif self.end and win == 'H':
+            #     player.punish(last_move_C)
+            #     # player.reward(last_move_H, 'win')
+            # pickle.dump(player, open("player1_" + str(self.row) + "_" + str(self.column) + ".pkl", "wb"))
 
             ###
             if cplayer == 'C':
@@ -132,7 +139,7 @@ class ChompGame:
 
 
 
-# training.initial_train(5,5)
-# training.continuous_train(5,5)
-game = ChompGame(5,5,'C')
+# training.initial_train(4,4)
+# training.continuous_train(4,4)
+game = ChompGame_Variation(4,4,'H')
 game.play_game()
