@@ -91,6 +91,7 @@ class ChompGame:
         last_move_H = []
         last_move_C = []
         # player = Player()
+        player = training.load_player(self.row, self.column)
         while not self.end:
             if cplayer == 'H':
                 pos = self.human_turn()
@@ -99,7 +100,7 @@ class ChompGame:
             elif cplayer == 'C':
                 # TODO implement smart move
                 #####
-                player = training.load_player(self.row, self.column)
+
                 player.update_config(self.board)
                 row1, col1 = player.next_move(self.board, player)
                 training.add_element(row1, col1, 0, self.board)
@@ -121,7 +122,7 @@ class ChompGame:
             elif self.end and win == 'H':
                 player.punish(last_move_C)
                 # player.reward(last_move_H, 'win')
-            pickle.dump(player, open("player1_" + str(self.row) + "_" + str(self.column) + ".pkl", "wb"))
+
 
             ###
             if cplayer == 'C':
@@ -129,10 +130,11 @@ class ChompGame:
             elif cplayer == 'H':
                 cplayer = 'C'
         pygame.quit()
+        pickle.dump(player, open("player1_" + str(self.row) + "_" + str(self.column) + ".pkl", "wb"))
 
 
 if __name__ == "__main__":
-    # training.initial_train(5,5)
-    # training.continuous_train(5,5)
-    game = ChompGame(5,5,'C')
+    # training.initial_train(9,9, 10000)
+    # training.continuous_train(9,9)
+    game = ChompGame(9,9,'H')
     game.play_game()
