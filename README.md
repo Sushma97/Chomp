@@ -10,7 +10,7 @@ This is a first player advantage game. We have used Reinforcement learning to ma
 
 Once the machine has learnt to play the game with more than 50000 games, it is almost impossible to beat it. 
 
-In order to play the normal version of the game, run python ChompGame.py. Follow the instructions accordingly. 
+# In order to play the normal version of the game, run python ChompGame.py. Follow the instructions accordingly. 
 
 <img width="565" alt="image" src="https://user-images.githubusercontent.com/24721561/165887239-45b2f09e-cbab-4b49-a039-30d026e70eb6.png">
 
@@ -22,13 +22,14 @@ Learning rate:
 <img width="416" alt="image" src="https://user-images.githubusercontent.com/24721561/165888651-f3596868-041a-4f04-8be7-5cdc1baeae9e.png">
 
 
-To play the game variation 1, where the poisonous block is hidden, run python ChompGame_variation_1.py and follow the instructions 
+# To play the game variation 1, where the poisonous block is hidden, run python ChompGame_variation_1.py and follow the instructions 
 <img width="581" alt="image" src="https://user-images.githubusercontent.com/24721561/165888871-affc3a6d-867b-4bfd-8350-2b07a3d52d07.png">
 
 Note that since this is a game of pure chance, there is no reinforcement training available for the computer. So computer choice is random each time. 
 
 
-To play the game variation 2, where the number of chocolate blocks you can eat at once is limited, run python ChompGame_variation_2.py and follow the instructions. This game is similar to the original, except for the restriction on the number of blocks. The reinforcement training can be done for this variation of the game. We observed that learning rate is slower with this change for a given configuration and fixing the limit on number of blocks that can be eaten. 
+# To play the game variation 2, where the number of chocolate blocks you can eat at once is limited, run python ChompGame_variation_2.py and follow the instructions. 
+This game is similar to the original, except for the restriction on the number of blocks. The reinforcement training can be done for this variation of the game. We observed that learning rate is slower with this change for a given configuration and fixing the limit on number of blocks that can be eaten. 
 If you try to eat blocks more than the limit, the block will be highlighted red. Currently 6*6 board with limit 3 is trained. For rest of the configuration, training has to be done before playing with smart computer. 
 
 
