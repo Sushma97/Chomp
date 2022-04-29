@@ -31,7 +31,6 @@ class Player:
                 last_config = self.stack_configs[i]
                 # print(len(self.config[last_config]))
                 if (r, c) in self.config[last_config]:
-                    print("removing {} {}".format((r,c), last_config))
                     self.config[last_config].remove((r, c))
                     break
         self.stack_configs = []

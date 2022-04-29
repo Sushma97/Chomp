@@ -4,6 +4,7 @@ import pygame
 import random
 import pickle
 import training
+import Player
 
 
 class ChompGame:
@@ -88,10 +89,11 @@ class ChompGame:
     def play_game(self):
         screen = self.visualization_init()
         cplayer = self.fplayer
-        last_move_H = []
         last_move_C = []
-        player = training.load_player(self.row, self.column)
-        print("i'm here")
+        try:
+            player = training.load_player(self.row, self.column)
+        except:
+            player = Player.Player("computer")
         # player = Player()
         while not self.end:
             if cplayer == 'H':
@@ -101,15 +103,16 @@ class ChompGame:
             elif cplayer == 'C':
                 # TODO implement smart move
                 #####
+                # if player:
+                    player.update_config(self.board)
+                    row1, col1 = player.next_move(self.board, player)
+                    training.add_element(row1, col1, 0, self.board)
+                    last_move_C.append((row1, col1))
+                    #####
+                    # pos = self.human_turn()
+                    pos = (row1, col1)
+                    Cpos = pos
 
-                player.update_config(self.board)
-                row1, col1 = player.next_move(self.board, player)
-                training.add_element(row1, col1, 0, self.board)
-                last_move_C.append((row1, col1))
-                #####
-                # pos = self.human_turn()
-                pos = (row1, col1)
-                Cpos = pos
             self.board[pos[0]:, pos[1]:] = 0
 
             self.select(pos, cplayer, screen)
@@ -132,9 +135,29 @@ class ChompGame:
                 cplayer = 'C'
         pygame.quit()
 
+if __name__ == "__main__":
+    print("Please choose from the following menu: \n"
+          "1. Play the game\n"
+          "2. Train the game\n"
+          "3. Improve the training of the game\n")
+    input_choice = input("Enter your choice : ")
+    if input_choice == '1':
+        row = int(input("\nEnter the board row size : "))
+        col = int(input("\nEnter the board col size : "))
+        player = input("\nEnter H for human playing first, Enter C for computer playing first: ")
+        game = ChompGame(row, col, player)
+        game.play_game()
+    elif input_choice == '2':
+        row = int(input("\nEnter the board row size : "))
+        col = int(input("\nEnter the board col size : "))
+        iter = int(input("\nEnter number of iterations to train: "))
+        training.initial_train(row,col, iter)
+    elif input_choice == '3':
+        row = int(input("\nEnter the board row size : "))
+        col = int(input("\nEnter the board col size : "))
+        iter = int(input("\nEnter number of iterations to train: "))
+        training.continuous_train(row,col, iter)
 
 
-training.initial_train(20,20)
-# training.continuous_train(7,6)
-# game = ChompGame(5,5,'C')
-# game.play_game()
+
+

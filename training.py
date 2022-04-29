@@ -72,10 +72,10 @@ def add_element(row, col, element, array):
     array[row:, col:] = 0
 
 
-def initial_train(row, col):
+def initial_train(row, col, iterations=1000):
     player1 = Player.Player('player1')
     player2 = Player.Player('player2',dumb=True)
-    play_games(player1, player2, row, col, 500000)
+    play_games(player1, player2, row, col, iterations)
 
     # Save the config of the players
     # pickle.dump(player1, open("player1_"+str(row)+"_"+ str(col)+".pkl", "wb"))
@@ -85,12 +85,15 @@ def load_player(row, col):
     player = pickle.load(open("player1_"+str(row)+"_"+ str(col)+".pkl", "rb"))
     return player
 
-def continuous_train(row, col):
-    player1 = pickle.load(open("player1_"+str(row)+"_"+ str(col)+".pkl", "rb"))
+def continuous_train(row, col, iterations=1000):
+    try:
+        player1 = pickle.load(open("player1_"+str(row)+"_"+ str(col)+".pkl", "rb"))
+    except:
+        player1 = Player.Player('player1')
     # player2 = copy.deepcopy(player1)
     # player2.name = "player2"
     player2 = Player.Player('player2',dumb=True)
-    play_games(player1, player2, row, col, 10000)
+    play_games(player1, player2, row, col, iterations)
     pickle.dump(player1, open("player1_"+str(row)+"_"+ str(col)+".pkl", "wb"))
 
 

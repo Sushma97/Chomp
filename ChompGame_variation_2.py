@@ -4,6 +4,7 @@ import pygame
 import random
 import pickle
 import training_variation_2
+import Player_variation_2
 
 
 class ChompGame:
@@ -111,7 +112,11 @@ class ChompGame:
         cplayer = self.fplayer
         # last_move_H = []
         last_move_C = []
-        player = training_variation_2.load_player(self.row, self.column, self.limit)
+
+        try:
+            player = training_variation_2.load_player(self.row, self.column, self.limit)
+        except:
+            player = Player_variation_2.Player("computer", self.limit)
         # player = Player()
         while not self.end:
             if cplayer == 'H':
@@ -160,9 +165,28 @@ class ChompGame:
                 cplayer = 'C'
         pygame.quit()
 
-
-
-training_variation_2.initial_train(6,6, 3)
-# training_variation_2.continuous_train(6,6,3)
-game = ChompGame(6,6,'C', 3)
-game.play_game()
+if __name__ == "__main__":
+    print("Please choose from the following menu: \n"
+          "1. Play the game\n"
+          "2. Train the game\n"
+          "3. Improve the training of the game\n")
+    input_choice = input("Enter your choice : ")
+    if input_choice == '1':
+        row = int(input("\nEnter the board row size : "))
+        col = int(input("\nEnter the board col size : "))
+        limit = int(input("\nEnter the limit on blocks that can be eaten : "))
+        player = input("\nEnter H for human playing first, Enter C for computer playing first: ")
+        game = ChompGame(row, col, player, limit)
+        game.play_game()
+    elif input_choice == '2':
+        row = int(input("\nEnter the board row size : "))
+        col = int(input("\nEnter the board col size : "))
+        limit = int(input("\nEnter the limit on blocks that can be eaten : "))
+        iter = int(input("\nEnter number of iterations to train: "))
+        training_variation_2.initial_train(row, col, limit, iter)
+    elif input_choice == '3':
+        row = int(input("\nEnter the board row size : "))
+        col = int(input("\nEnter the board col size : "))
+        limit = int(input("\nEnter the limit on blocks that can be eaten : "))
+        iter = int(input("\nEnter number of iterations to train: "))
+        training_variation_2.continuous_train(row, col, limit, iter)
