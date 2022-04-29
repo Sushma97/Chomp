@@ -1,7 +1,7 @@
 import copy
 
 import numpy as np
-import Player
+import Player_variation_2
 import pickle
 
 def win(position):
@@ -72,28 +72,27 @@ def add_element(row, col, element, array):
     array[row:, col:] = 0
 
 
-def initial_train(row, col, iterations=1000):
-    player1 = Player.Player('player1')
-    player2 = Player.Player('player2',dumb=True)
-    play_games(player1, player2, row, col, iterations)
-
+def initial_train(row, col, size, iter=1000):
+    player1 = Player_variation_2.Player('player1', size)
+    player2 = Player_variation_2.Player('player2', size, dumb=True)
+    play_games(player1, player2, row, col, iter)
     # Save the config of the players
-    # pickle.dump(player1, open("player1_"+str(row)+"_"+ str(col)+".pkl", "wb"))
+    pickle.dump(player1, open("player1_"+str(row)+"_"+ str(col)+"_"+ str(size)+".pkl", "wb"))
 
 
-def load_player(row, col):
-    player = pickle.load(open("player1_"+str(row)+"_"+ str(col)+".pkl", "rb"))
+def load_player(row, col, size):
+    player = pickle.load(open("player1_"+str(row)+"_"+ str(col)+"_"+ str(size)+".pkl", "rb"))
     return player
 
-def continuous_train(row, col, iterations=1000):
+def continuous_train(row, col, size, iter=1000):
     try:
-        player1 = pickle.load(open("player1_"+str(row)+"_"+ str(col)+".pkl", "rb"))
+        player1 = pickle.load(open("player1_" + str(row) + "_" + str(col) + "_" + str(size) + ".pkl", "rb"))
     except:
-        player1 = Player.Player('player1')
+        player1 = Player_variation_2.Player('player1', size)
     # player2 = copy.deepcopy(player1)
     # player2.name = "player2"
-    player2 = Player.Player('player2',dumb=True)
-    play_games(player1, player2, row, col, iterations)
-    pickle.dump(player1, open("player1_"+str(row)+"_"+ str(col)+".pkl", "wb"))
+    player2 = Player_variation_2.Player('player2', size, dumb=True)
+    play_games(player1, player2, row, col, iter)
+    pickle.dump(player1, open("player1_"+str(row)+"_"+ str(col)+"_"+ str(size)+".pkl", "wb"))
 
 

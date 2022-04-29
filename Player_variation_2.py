@@ -2,10 +2,11 @@ import numpy as np
 import random
 
 class Player:
-    def __init__(self, name, dumb=False):
+    def __init__(self, name,size, dumb=False):
         self.config = {}
         self.stack_configs = []
         # self.move = move
+        self.size = size
         self.games_won = 0
         self.games_lost = 0
         self.games_drawn = 0
@@ -54,7 +55,7 @@ class Player:
         rows, cols = np.where(array == 1)
         possible = set()
         for r, c in zip(rows, cols):
-            if (r, c) != (0, 0):
+            if (r, c) != (0, 0) and self.valid_move((r, c), array):
                 possible.add((r, c))
         return possible if len(possible) > 0 else [(0, 0)]
 
@@ -68,3 +69,11 @@ class Player:
                 return (0, 0)
         else:
             return random.sample(self.possible_moves(array), 1)[0]
+
+    def valid_move(self, pos, array1):
+        temp = array1[pos[0]:, pos[1]:]
+        if np.where(temp == 1)[0].size <= self.size:
+            return True
+
+
+

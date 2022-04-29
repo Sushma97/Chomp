@@ -137,9 +137,10 @@ class ChompGame_Variation:
                 cplayer = 'C'
         pygame.quit()
 
+if __name__ == "__main__":
+    row = int(input("\nEnter the board row size : "))
+    col = int(input("\nEnter the board col size : "))
+    player = input("\nEnter H for human playing first, Enter C for computer playing first: ")
+    game = ChompGame_Variation(row, col, player)
+    game.play_game()
 
-
-# training.initial_train(4,4)
-# training.continuous_train(4,4)
-game = ChompGame_Variation(4,4,'H')
-game.play_game()
