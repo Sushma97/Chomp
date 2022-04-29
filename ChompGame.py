@@ -90,6 +90,8 @@ class ChompGame:
         cplayer = self.fplayer
         last_move_H = []
         last_move_C = []
+        player = training.load_player(self.row, self.column)
+        print("i'm here")
         # player = Player()
         while not self.end:
             if cplayer == 'H':
@@ -99,7 +101,7 @@ class ChompGame:
             elif cplayer == 'C':
                 # TODO implement smart move
                 #####
-                player = training.load_player(self.row, self.column)
+
                 player.update_config(self.board)
                 row1, col1 = player.next_move(self.board, player)
                 training.add_element(row1, col1, 0, self.board)
@@ -132,7 +134,7 @@ class ChompGame:
 
 
 
-# training.initial_train(5,5)
-# training.continuous_train(5,5)
-game = ChompGame(5,5,'C')
-game.play_game()
+training.initial_train(20,20)
+# training.continuous_train(7,6)
+# game = ChompGame(5,5,'C')
+# game.play_game()

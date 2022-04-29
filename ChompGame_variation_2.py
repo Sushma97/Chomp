@@ -111,6 +111,7 @@ class ChompGame:
         cplayer = self.fplayer
         # last_move_H = []
         last_move_C = []
+        player = training_variation_2.load_player(self.row, self.column, self.limit)
         # player = Player()
         while not self.end:
             if cplayer == 'H':
@@ -125,7 +126,7 @@ class ChompGame:
                 #####
                 # pos = self.human_turn()
 
-                player = training_variation_2.load_player(self.row, self.column, self.limit)
+
                 player.update_config(self.board)
                 row1, col1 = player.next_move(self.board, player)
                 if not self.valid_move((row1, col1)):
@@ -161,7 +162,7 @@ class ChompGame:
 
 
 
-# training_variation_2.initial_train(6,6, 3)
+training_variation_2.initial_train(6,6, 3)
 # training_variation_2.continuous_train(6,6,3)
 game = ChompGame(6,6,'C', 3)
 game.play_game()

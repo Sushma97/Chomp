@@ -27,7 +27,7 @@ class Player:
 
     def punish(self, last_move):
         if not self.dumb:
-            for i in range(len(last_move)):
+            for i in range(len(last_move)-1, -1,  -1):
                 r, c = last_move[i]
                 last_config = self.stack_configs[i]
                 # print(len(self.config[last_config]))
@@ -46,17 +46,17 @@ class Player:
                 #remove all the other moves and replace with the winning move
                 # self.config[last_config]
                 ####
-                self.config[last_config].append((r, c))
+                self.config[last_config].add((r, c))
                 # self.config[last_config].append((r, c))
                 # self.config[last_config].append((r, c))
         self.stack_configs = []
 
     def possible_moves(self,array):
         rows, cols = np.where(array == 1)
-        possible = []
+        possible = set()
         for r, c in zip(rows, cols):
             if (r, c) != (0, 0) and self.valid_move((r, c), array):
-                possible.append((r, c))
+                possible.add((r, c))
         return possible if len(possible) > 0 else [(0, 0)]
 
     def next_move(self, array, player=None):
@@ -64,11 +64,11 @@ class Player:
         if player:
             x = player.player_possible_moves(array)
             if len(x) != 0:  # no choice which means that the player has lost
-                return random.choice(x)
+                return random.sample(x, 1)[0]
             else:
                 return (0, 0)
         else:
-            return random.choice(self.possible_moves(array))
+            return random.sample(self.possible_moves(array), 1)[0]
 
     def valid_move(self, pos, array1):
         temp = array1[pos[0]:, pos[1]:]
