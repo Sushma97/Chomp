@@ -131,8 +131,8 @@ class ChompGame:
         pygame.quit()
 
 
-
-# training.initial_train(5,5)
-# training.continuous_train(5,5)
-game = ChompGame(5,5,'C')
-game.play_game()
+if __name__ == "__main__":
+    # training.initial_train(5,5)
+    # training.continuous_train(5,5)
+    game = ChompGame(5,5,'C')
+    game.play_game()
