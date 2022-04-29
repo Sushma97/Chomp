@@ -36,8 +36,10 @@ Learning rate
 <img width="417" alt="image" src="https://user-images.githubusercontent.com/24721561/165890461-d24e3fb9-f1c6-499c-ac61-d6976d686352.png">
 
 
-
-
+## To play the game variation 3, where there are a number of poisoned blocks and antidotes, run python Chomp_Poison_Antidote.py
+- This game has hidden poisoned blocks and antidotes in the chocolate, whenever a player picks a poison block he doesn't die or lose immediately.
+- As soon as a player eats a poisoned cell a counter called `sustenance` is initiated and it reduced for each subsequent moves. If the player does not
+find an antidote within the next moves(`sustenance`) he will lose
 
 
 
