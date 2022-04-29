@@ -32,6 +32,10 @@ Note that since this is a game of pure chance, there is no reinforcement trainin
 This game is similar to the original, except for the restriction on the number of blocks. The reinforcement training can be done for this variation of the game. We observed that learning rate is slower with this change for a given configuration and fixing the limit on number of blocks that can be eaten. 
 If you try to eat blocks more than the limit, the block will be highlighted red. Currently 6*6 board with limit 3 is trained. For rest of the configuration, training has to be done before playing with smart computer. 
 
+Learning rate
+<img width="417" alt="image" src="https://user-images.githubusercontent.com/24721561/165890461-d24e3fb9-f1c6-499c-ac61-d6976d686352.png">
+
+
 
 
 
