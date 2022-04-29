@@ -12,4 +12,6 @@ red = (255, 0, 0)
 blue = (0, 0, 255)
 gray = (128, 128, 128)
 orange = (255, 128, 0)
+yellow = (255,255,0)
+poison_antidote_ratio = 0.05
 
