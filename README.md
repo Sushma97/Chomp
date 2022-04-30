@@ -22,13 +22,13 @@ Learning rate:
 <img width="416" alt="image" src="https://user-images.githubusercontent.com/24721561/165888651-f3596868-041a-4f04-8be7-5cdc1baeae9e.png">
 
 
-## To play the game variation 1, where the poisonous block is hidden, run python ChompGame_variation_1.py and follow the instructions 
+### To play the game variation 1, where the poisonous block is hidden, run python ChompGame_variation_1.py and follow the instructions 
 <img width="581" alt="image" src="https://user-images.githubusercontent.com/24721561/165888871-affc3a6d-867b-4bfd-8350-2b07a3d52d07.png">
 
 Note that since this is a game of pure chance, there is no reinforcement training available for the computer. So computer choice is random each time. 
 
 
-## To play the game variation 2, where the number of chocolate blocks you can eat at once is limited, run python ChompGame_variation_2.py and follow the instructions. 
+### To play the game variation 2, where the number of chocolate blocks you can eat at once is limited, run python ChompGame_variation_2.py and follow the instructions. 
 This game is similar to the original, except for the restriction on the number of blocks. The reinforcement training can be done for this variation of the game. We observed that learning rate is slower with this change for a given configuration and fixing the limit on number of blocks that can be eaten. 
 If you try to eat blocks more than the limit, the block will be highlighted red. Currently 6*6 board with limit 3 is trained. For rest of the configuration, training has to be done before playing with smart computer. 
 
@@ -36,7 +36,7 @@ Learning rate
 <img width="417" alt="image" src="https://user-images.githubusercontent.com/24721561/165890461-d24e3fb9-f1c6-499c-ac61-d6976d686352.png">
 
 
-## To play the game variation 3, where there are a number of poisoned blocks and antidotes, run python Chomp_Poison_Antidote.py
+### To play the game variation 3, where there are a number of poisoned blocks and antidotes, run python Chomp_Poison_Antidote.py
 - This game has hidden poisoned blocks and antidotes in the chocolate, whenever a player picks a poison block he doesn't die or lose immediately.
 - As soon as a player eats a poisoned cell a counter called `sustenance` is initiated and it reduced for each subsequent moves. If the player does not
 find an antidote within the next moves(`sustenance`) he will lose
