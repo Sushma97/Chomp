@@ -88,7 +88,7 @@ class Poison_Antidote(ChompGame):
         self.antidotes = self.poisons = int(C.poison_antidote_ratio*self.row*self.column)
         #randomly choose antidotes + poisons number of points from the board
         total_cells_board = self.row*self.column
-        points = np.random.choice(total_cells_board,self.antidotes*self.poisons,replace = False)
+        points = np.random.choice(total_cells_board,self.antidotes,replace = False)
         flag = -1
         for i in points:
             row = i//self.row
@@ -191,7 +191,7 @@ class Poison_Antidote(ChompGame):
 
 if __name__ == '__main__':
     # player =
-    game1 = Poison_Antidote(10,10,'C')
+    game1 = Poison_Antidote(20,20,'C')
     # print(game1.poisons)
     # player = Antidote_Player(game1,'Player1',dumb=False)
     game1.play_game()
