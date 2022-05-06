@@ -190,8 +190,5 @@ class Poison_Antidote(ChompGame):
         pygame.quit()
 
 if __name__ == '__main__':
-    # player =
     game1 = Poison_Antidote(20,20,'C')
-    # print(game1.poisons)
-    # player = Antidote_Player(game1,'Player1',dumb=False)
     game1.play_game()

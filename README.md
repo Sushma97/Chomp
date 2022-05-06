@@ -46,7 +46,31 @@ To play the game variation 3, where there are a number of poisoned blocks and an
 - As soon as a player eats a poisoned cell a counter called `sustenance` is initiated and it reduced for each subsequent moves. If the player does not
 find an antidote within the next moves(`sustenance`) he will lose
 
+#### Instructions
+- First instantiate the game `Poison_Antidote(<no_of_rows>,<no_of_cols><'C'/'H'>)`
+- 'C' if Computer plays first and 'H' if Human plays first
+- run the `play_game()` for the instantiated object
+
+e.g
+>game = Poison_Antidote(20,20,'C')\
+>game.play_game()
 
 
+### Big O analysis
+#### Time Complexity
+- Let's take N as the number of tiles/chocolate pieces on the board
+- The program runs for each cell until there are no cells remaining.
+- For each turn it calculates the possible moves which is number of remaining cells. O(N)
+- It randomly chooses a possible move from this. O(1)
+- After winning the game the AI rewards all its winning moves and, thus it goes through every move it has made until that point. O(N)
+- All this training runs for a set number of iterations P
+- Hence, the time complexity can be written as O(P*(N+N)\*N)->O(P*N^2)
 
+#### Space Complexity
+- The training is done by storing the configuration and corresponding possible moves.
+- The two main things stored are the config of the board and corresponding possible moves, and the next is the configuration of the board after each move
+- The config is a dictionary with key as a flattened array and value as the list of rows & cols
+- The config file is a large dictionary file stored as a pickle
+- The space complexity is of the order of O(N\*N*P)
+- Where P are the number of iterations and N are the number of tiles on the board.
 
